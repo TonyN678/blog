@@ -128,14 +128,26 @@
     a {
       text-decoration: none;
       margin-right: .31rem;
+      outline: none;
 
     }
     svg {
       color: #888a90;
-      height: 24px;
-      width: 24px;
+      height: 30px;
+      width: 30px;
+      outline: none;
+
       &:hover {
         color: rgb(221, 221, 221);
+        outline: none;
+      }
+      
+      &:active {
+        outline: none;
+      }
+      
+      &:focus {
+        outline: none;
       }
     }
 
