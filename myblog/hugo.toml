@@ -100,7 +100,7 @@ ignoreErrors = ["additional-script-loading-error"] # ignore error of loading add
   # Note: image is not rendered if the resource(avatar image) is not found. No error is displayed.
   intro = "Tien's blog"
   name = "Tien Nguyen"
-  description = "Linux Ricer"
+  description = "Tech Enthusiast"
 
 # Allow to override webmanifest options
 [Languages.en-gb.params.webmanifest]

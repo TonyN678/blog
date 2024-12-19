@@ -30,8 +30,11 @@ I built this website with Hugo and Github Page, a cool fast minimalist combo for
 
 7. Now you can customise any html, css, js files you see in *themes* folder and preview with `hugo serve`
 
+8. You can publish new posts with `hugo new content content/posts/my-first-post.md`.
+
 8. Once you satisfy with everything simply publish the website by typing `hugo`, remember to delete everything in *public* folder everytime you publish to avoid any collision cause `hugo` will generate a new website in *public* folder everytime.
 
 9. Add, Commit and Push to Gihub repos and enjoy your page at *USERNAME.github.io*. 
 
-
+## Adjustments & Fixes
+1. Add more sub-folder in header(navigation bar): Add another entry in hugo.toml

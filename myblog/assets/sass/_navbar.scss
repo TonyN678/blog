@@ -169,6 +169,10 @@
     outline: none; /* Remove blue outline */
   }
 
+  &:focus {
+  outline: none;
+  }
+
   &:not(:last-child) {
     margin-right: 5px;
   }
