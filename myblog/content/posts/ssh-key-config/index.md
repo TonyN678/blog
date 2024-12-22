@@ -71,6 +71,7 @@ ssh -i .ssh/<key_name> <user>@<remote_host>
 
 To enhance security, disable password authentication on the remote server. This ensures only users with the private key can log in.
 
+> **_NOTE:_**   This will block password login from ssh but still allow on-site direct connection with hdmi and monitor.
 1. Open the SSH daemon configuration file on the remote server:
    ```bash
    sudo vim /etc/ssh/sshd_config
@@ -79,7 +80,9 @@ To enhance security, disable password authentication on the remote server. This 
    ```
    PasswordAuthentication no
    PermitRootLogin no
+   Port 666 # Default is 22, everyone knows that :/
    ```
+   > **_NOTE:_**  Add flag "-p <PORT_NUM>" when ssh if changed PORT.
 3. Restart the SSH service:
    ```bash
    sudo systemctl restart sshd

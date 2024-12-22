@@ -1,5 +1,5 @@
 title = "Tien's blog"
-baseURL = 'https://tonyn678.github.io/'
+baseURL = 'https://tienng.xyz/'
 
 # This is what goes in <html lang="">
 languageCode = 'en-us'
@@ -123,7 +123,7 @@ url = "https://github.com/tonyn678"
 
 [[params.socialIcons]]
 name = "email"
-url = "mailto:tony.nht16@gmail.com"
+url = "mailto:tien@tienng.xyz"
 
 [[params.socialIcons]]
 name = "linkedin"

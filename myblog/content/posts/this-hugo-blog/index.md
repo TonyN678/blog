@@ -1,13 +1,13 @@
 +++
 date = '2024-11-23T23:00:55+11:00'
-draft = false
 title = 'How did I build this blog ?'
+toc = true
 +++
 
 ## Inspiration
 I had always wanted to build my own website, no Wordpress or any third-party hosting bloats that rip your pocket! This is also for storing information and experiences I gained throughout my learning journey in the world of tech and engineering so I don't have to crawling through my dusting physical A4 notebooks or proprietary gg docs :/
 
-## How?
+## Set Up HUGO
 I built this website with Hugo and Github Page, a cool fast minimalist combo for hosting with no databases, just raw mark-down texts and basic html, css, js skills :)
 
 1. Download [Hugo](https://gohugo.io/getting-started/quick-start/)
@@ -36,5 +36,73 @@ I built this website with Hugo and Github Page, a cool fast minimalist combo for
 
 9. Add, Commit and Push to Gihub repos and enjoy your page at *USERNAME.github.io*. 
 
-## Adjustments & Fixes
-1. Add more sub-folder in header(navigation bar): Add another entry in hugo.toml
+---
+## How To ?
+### 1. Link Images 
+
+#### Step 1: Organise Your Image Files
+1. Navigate to the `static` directory in your Hugo project:
+   ```bash
+   cd <your-hugo-project>/static
+   ```
+
+2. Create a folder to store your images (e.g., `images`):
+   ```bash
+   mkdir images
+   ```
+
+3. Add your image file(s) to the newly created folder:
+   ```bash
+   cp /path/to/your/image.jpg <your-hugo-project>/static/images/
+   ```
+
+#### Step 2: Link the Image in Your Post
+1. Open your post file in the `content` directory (e.g., `content/posts/example.md`):
+   ```bash
+   nano content/posts/example.md
+   ```
+
+2. Use the Markdown syntax to add the image:
+   ```markdown
+   ![Alt text describing the image](/images/image.jpg)
+   ```
+   - Replace `Alt text describing the image` with a short description of the image.
+   - Adjust the path (`/images/image.jpg`) to match your file location.
+
+
+#### Step 3: Resize or Align Images (Optional)
+##### Resize Images
+Use the `width` and `height` attributes in HTML within your Markdown file:
+```markdown
+<img src="/images/image.jpg" alt="Alt text" width="600" height="400">
+```
+
+##### Centre Align Images
+Wrap the image in a `<div>` tag with a `style` attribute:
+```markdown
+<div style="text-align: center;">
+  <img src="/images/image.jpg" alt="Alt text" width="600">
+</div>
+```
+
+#### Step 4: Test Your Post
+1. Start the Hugo development server:
+   ```bash
+   hugo server
+   ```
+
+2. Open your browser and navigate to `http://localhost:1313` to verify that the image appears correctly.
+
+
+#### Step 5: Deploy Your Changes
+If the image is displayed as expected, deploy your Hugo site to make it live:
+```bash
+hugo
+scp -r public/ user@your-server:/path/to/site
+```
+
+Now your post is complete with the linked image properly displayed.
+
+---
+## References
+- For more information regarding the theme, click [here](https://hba.sid.one/posts/)
