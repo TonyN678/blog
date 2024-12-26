@@ -174,7 +174,157 @@ You should see the correct ownership (e.g., `tien:tien`).
 By following these steps, your external hard drive will be properly mounted and accessible, with ownership and permissions configured to persist across reboots.
 
 ---
-## Step 5: Install FileBrowser
+## Step 5: Encrypt the External Hard Drive with LUKS with Keyfile
+
+These commands are used to create a partition on a disk, encrypt it, and mount it on a specific mount point. All of this automatically without entering a password at boot.
+
+### Video tutorial
+
+https://www.youtube.com/watch?v=UXJrSji-nNo
+
+### If you need to create your partitions on your disk:
+#### List partitions
+```
+sudo fdisk -l
+```
+This command lists all the available disks and their partitions on the system. It's used to find the name of the disk that you want to partition.
+My disk is "sda" (find your's name)
+
+#### Wipe the hard-drive if there is still something on there
+```
+sudo wipefs --all /dev/sda
+```
+#### Create partition
+```
+sudo fdisk /dev/sda
+```
+- This command starts the fdisk partitioning utility on the /dev/sda disk. From here, you can create a new partition by selecting "n" and following the prompts.
+
+- "n" to create a new partition, "d" to delete the partition, "p" to check the partition table
+"w" to write.
+
+#### Verify partition was created
+```
+lsblk -f 
+```
+It's used to verify that the partition was created with the correct filesystem.
+
+### Encrypting with LUKS
+```
+sudo cryptsetup luksFormat /dev/sda1
+```
+This command encrypts the newly created partition using the LUKS encryption format. You'll be prompted to enter a passphrase to secure the encryption.
+
+### Unlock the LUKS partition
+```
+sudo cryptsetup luksOpen /dev/sda1 storage
+```
+This command unlocks the encrypted partition and maps it to the device named "storage", or could be any name you like.
+
+### Create the LUKS filesystem
+```
+sudo mkfs.ext4 /dev/mapper/storage
+```
+This command creates a new ext4 filesystem on the encrypted partition.
+
+### Using a keyfile
+
+#### Create the keyfile
+```
+sudo dd if=/dev/urandom of=/root/keyfile bs=1024 count=4
+```
+This command generates a super complex password to be used to unlock the encrypted partition.
+
+#### Set keyfile permissions
+```
+sudo chmod 0400 /root/keyfile
+```
+This command sets the permissions of the keyfile so it can only be read.
+
+#### Adding keyfile to LUKS
+```
+sudo cryptsetup luksAddKey /dev/sda1 /root/keyfile
+```
+This command adds the generated keyfile as an additional key to the LUKS encryption.
+
+### Retrieve the UUID of LUKS partition
+```
+sudo cryptsetup luksUUID /dev/sda1
+```
+This command retrieves the UUID of the encrypted partition, which is needed to configure the crypttab file.
+
+### Edit crypttab
+
+#### Open crypttab
+
+    sudo vim /etc/crypttab
+
+This command opens the crypttab file for editing. This file is used to configure the encrypted partition to be automatically unlocked at boot time.
+
+#### Add the unlock partition in crypttab
+```
+databank     /dev/disk/by-uuid/<YOUR_DISK_UUID>  /root/keyfile  luks
+```
+This tells the system to unlock the partition with the UUID (above) using the keyfile located at /root/keyfile, and to map it to the device named "databank".
+
+### Edit FSTAB
+
+#### Open FSTAB
+```
+sudo vim /etc/fstab
+```
+This file is used to configure the system to automatically mount the encrypted partition at boot time.
+
+#### Add the mountpoint to FSTAB
+
+It is the volume in /dev/mapper that you see using lsblk -f
+
+```
+/dev/mapper/databank  /mnt/extdrive     ext4    defaults        0       2
+```
+This line tells the system to mount the device named "databank" (which was created in the previous step) at the mount point /mnt/extdrive using the ext4 filesystem.
+
+### Mount point
+
+#### Create the mount point
+```
+sudo mkdir /media/databank
+```
+This command creates the mount point directory for the encrypted partition.
+
+#### Setting the ownership
+```
+sudo chown tien /mnt/extdrive
+```
+This command sets the ownership of the mount point directory to the user "tien".
+
+#### Reboot
+```
+sudo reboot now
+```
+#### Reset the ownership again
+```
+sudo chown tien /mnt/extdrive
+```
+- This command sets the ownership of the mounted partition to the user "tien" temporarily.
+- Or better to set this automatically at boot [here](#automate-ownership-changes-if-needed).
+### Verifications
+
+#### Verify partitions
+```
+lsblk -f
+```
+#### Verify that mountpoint is readable and writable
+```
+cd /media/databank/
+touch a
+ls
+```
+
+![luks](/luks.png)
+
+---
+## Step 6: Install FileBrowser
 
 [FileBrowser](https://filebrowser.org/installation) is a lightweight file management solution, perfect for 4GB RAM Raspberry Pi 4. We could also create tunnel to FileBrowser with CloudFlares to have a NAS/cloud functions.     
  I chose FileBrowser because Samba is too minimal and don't have web GUI, NextCloud is over-featured and heavy.
@@ -189,13 +339,13 @@ docker run -v /path/to/root:/srv -v /path/to/filebrowser.db:/database/filebrowse
 
 ---
 
-## Step 6: Buy a Domain Name
+## Step 7: Buy a Domain Name
 
 I purchased the domain name `tienng.xyz` from [gen.xyz](https://gen.xyz). After purchasing, I configured DNS settings to point to my Raspberry Pi using Cloudflare.
 
 ---
 
-## Step 7: Set Up Cloudflare Tunnel
+## Step 8: Set Up Cloudflare Tunnel
 
 Since I could not enable port forwarding on my school's network, I used Cloudflare Tunnel to access my Raspberry Pi services remotely.
 
@@ -220,7 +370,7 @@ connect in – we only want to be able to access it ourselves!
 ---
 
 
-## Step 8: Set Up Immich and Navidrome
+## Step 9: Set Up Immich and Navidrome
 
 Immich and Navidrome are excellent solutions for managing photos and music streaming, respectively.
 
@@ -238,7 +388,108 @@ Immich and Navidrome are excellent solutions for managing photos and music strea
 
 ---
 
-# Conclusion
+## Step 10: Set Up Pi-Hole on Portainer
+- Pi-hole is a network-wide ad blocker that works at the DNS level, preventing unwanted content from ever reaching your devices. Running it in Docker makes it portable, easy to manage, and isolated from your host system. This guide explains how to set up Pi-hole using Docker.
+- See the guide [here](https://www.youtube.com/watch?v=gAPZ-KI4JIc).
+
+### 1. Clear port 53 
+- [Guide](https://github.com/bigbeartechworld/big-bear-scripts/tree/master/disable-dns-service)
+
+```bash
+bash -c "$(wget -qLO - https://raw.githubusercontent.com/bigbeartechworld/big-bear-scripts/master/disable-dns-service/disable_dns_service.sh)"
+```
+
+### 2. Add Pi-Hole Stack on Portainer
+- [Script](https://github.com/bigbeartechworld/big-bear-video-assets/blob/main/how-to-install-pihole-on-portainer/docker-compose-pihole.yml)
+
+```yaml
+# Docker Compose version
+version: "3"
+
+# Define services (containers to be created)
+services:
+  # Service name: pihole
+  pihole:
+    # Name of the container instance
+    container_name: pihole
+
+    # Image to use for this container
+    # Use the specified version of the pihole image
+    image: pihole/pihole:2024.07.0
+
+    # Expose and map ports (host:container)
+    ports:
+      - "53:53/tcp" # DNS (TCP)
+      - "53:53/udp" # DNS (UDP)
+      - "7300:80/tcp" # Web UI HTTP
+
+    # Environment variables
+    environment:
+      TZ: "UTC" # Time Zone; Update this to your time zone
+      WEBPASSWORD: "password" # Admin password for web UI; Change this to your desired admin password
+
+    # Mount volumes for persistent data
+    volumes:
+      - "/data/pihole/data/pihole:/etc/pihole" # Pi-hole data
+      - "/data/pihole/data/dnsmasq:/etc/dnsmasq.d" # dnsmasq data
+
+    # Restart policy for the container when it exits
+    restart: unless-stopped
+
+    # DNS servers for this container to use
+    dns:
+      - 127.0.0.1 # Localhost for internal resolution
+      - 1.1.1.1 # Cloudflare DNS for external resolution
+```
+
+Adjust the `TZ` and `WEBPASSWORD` as necessary. The `volumes` section ensures Pi-hole data persists between container restarts (keep default).
+
+
+### 3. Start the Container
+- Deploy Stack 
+
+### 4. Access the Pi-hole Admin Interface
+
+Once the container is running, access the Pi-hole web interface by navigating to the IP address of your Docker host in a web browser. For example:
+
+```
+http://192.168.4.178:7300/admin
+```
+
+Log in using the password you set during configuration.
+
+---
+
+### 5. Configure Your Network
+
+To start blocking ads, set your router or device DNS to point to your Pi-hole instance. Typically, this involves:
+
+1. Logging into your router's admin interface.
+2. Setting the DNS server to the IP address of your Docker host.
+
+Alternatively, configure individual devices to use Pi-hole as their DNS server.
+
+---
+
+### Troubleshooting
+
+- **Issue:** Pi-hole web interface doesn’t load.
+  - **Solution:** Check if the container is running: `docker ps`. Restart it if necessary: `docker restart pihole`.
+
+- **Issue:** DNS resolution isn’t working.
+  - **Solution:** Ensure the required ports (53 and 80) are not used by other services.
+
+- **Issue:** Configuration doesn’t persist after a restart.
+  - **Solution:** Verify that the `volumes` are correctly mounted.
+
+
+
+
+
+
+
+
+## Conclusion
 
 This setup transformed my Raspberry Pi into a versatile home server capable of file management, media streaming, and photo management—all accessible remotely through a secure Cloudflare Tunnel. With Docker, adding or modifying services is a breeze, making this setup highly customisable and scalable.
 

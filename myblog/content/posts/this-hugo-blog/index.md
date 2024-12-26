@@ -38,9 +38,14 @@ I built this website with Hugo and Github Page, a cool fast minimalist combo for
 
 ---
 ## How To ?
-### 1. Link Images 
+### 1. Link Images ([reference](https://discourse.gohugo.io/t/how-to-add-image-to-hugo-with-local-and-remote/41391))
+#### Option 1: Decentralized Images (images saved separately with each posts)
+- Instead of putting all the posts in the "posts" directory which is super messy later on, you could create separate directories for each post and create an index.md in each folder along with prefered images:
 
-#### Step 1: Organise Your Image Files
+![Page Bundle](/pagebundle.png)
+
+#### Option 2: Centralised Images (all images saved in static directory)
+##### Step 1: Organise Your Image Files
 1. Navigate to the `static` directory in your Hugo project:
    ```bash
    cd <your-hugo-project>/static
@@ -56,10 +61,10 @@ I built this website with Hugo and Github Page, a cool fast minimalist combo for
    cp /path/to/your/image.jpg <your-hugo-project>/static/images/
    ```
 
-#### Step 2: Link the Image in Your Post
+##### Step 2: Link the Image in Your Post
 1. Open your post file in the `content` directory (e.g., `content/posts/example.md`):
    ```bash
-   nano content/posts/example.md
+   vim content/posts/example.md
    ```
 
 2. Use the Markdown syntax to add the image:
@@ -70,14 +75,14 @@ I built this website with Hugo and Github Page, a cool fast minimalist combo for
    - Adjust the path (`/images/image.jpg`) to match your file location.
 
 
-#### Step 3: Resize or Align Images (Optional)
-##### Resize Images
+##### Step 3: Resize or Align Images (Optional)
+###### Resize Images
 Use the `width` and `height` attributes in HTML within your Markdown file:
 ```markdown
 <img src="/images/image.jpg" alt="Alt text" width="600" height="400">
 ```
 
-##### Centre Align Images
+###### Centre Align Images
 Wrap the image in a `<div>` tag with a `style` attribute:
 ```markdown
 <div style="text-align: center;">
@@ -85,23 +90,29 @@ Wrap the image in a `<div>` tag with a `style` attribute:
 </div>
 ```
 
-#### Step 4: Test Your Post
+##### Step 4: Test Your Post
 1. Start the Hugo development server:
    ```bash
-   hugo server
+   hugo serve
    ```
 
 2. Open your browser and navigate to `http://localhost:1313` to verify that the image appears correctly.
 
 
-#### Step 5: Deploy Your Changes
-If the image is displayed as expected, deploy your Hugo site to make it live:
-```bash
-hugo
-scp -r public/ user@your-server:/path/to/site
-```
 
-Now your post is complete with the linked image properly displayed.
+### 2. Link custom domain to Gihub Page ([reference](https://www.youtube.com/watch?v=k3Y3c5WlAfc&list=WL&index=1))
+
+#### Step 1: Add Github's DNS records to domain hosting site
+1. Go to this [website](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site),
+    go the "Configuring an apex domain" and at step 5, copy the 4 IP addresses.
+2. Go to domain provider and edit your domain's DNS settings to include those 4 IP addresses with a "www" host name with CNAME record pointing to your Gihub Pages:
+
+![dnsrecord](/dnsrecord.png)     
+
+#### Step 2: Add Customed Domain to Github Page
+1. Go to Github Page repository <name>.github.io, go to Settings then Pages.
+2. Add your domain to "Custom domain" section.
+3. Wait up to a day for https to be active for secure connection.
 
 ---
 ## References

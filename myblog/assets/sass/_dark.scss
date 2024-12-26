@@ -175,6 +175,7 @@
 
   // Post Item
   .post-item {
+    outline: none;
     &:not(:first-child) {
       border-color: $dark-light;
     }
