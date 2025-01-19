@@ -1,5 +1,5 @@
 +++
-date = '2024-12-17T15:02:12+11:00'
+date = '2024-01-17T15:02:12+11:00'
 toc = true
 title = 'Archlinux Setup and common Linux Errors'
 +++

@@ -109,6 +109,9 @@ Wrap the image in a `<div>` tag with a `style` attribute:
 
 ![dnsrecord](/dnsrecord.png)     
 
+**OR through Cloudflare Nameservers**
+
+[Add DNS Records to Cloudflare](/projects/raspberry-pi-server/#1-conflict-between-nameservers-and-manual-dns-on-domain-hosting-platform)
 #### Step 2: Add Customed Domain to Github Page
 1. Go to Github Page repository <name>.github.io, go to Settings then Pages.
 2. Add your domain to "Custom domain" section.

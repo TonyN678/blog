@@ -471,7 +471,7 @@ Alternatively, configure individual devices to use Pi-hole as their DNS server.
 
 ---
 
-### Troubleshooting
+### Pi-hole Troubleshooting
 
 - **Issue:** Pi-hole web interface doesn’t load.
   - **Solution:** Check if the container is running: `docker ps`. Restart it if necessary: `docker restart pihole`.
@@ -483,10 +483,17 @@ Alternatively, configure individual devices to use Pi-hole as their DNS server.
   - **Solution:** Verify that the `volumes` are correctly mounted.
 
 
+## Common Errors and Solutions
+### 1. Conflict between Nameservers and Manual DNS on Domain Hosting platform
+At first when I had my personal website at tienng.xyz only, I had to choose either keeping the website alive or the tunnels to my RaspberryPi Server since my
+domain registrar `gen.xyz` only allow either "Nameservers" or "Manual DNS records". Since all of my services provided by Cloudflares so I decided to assign Cloudflares' nameservers 
+to my domain registrar. This means that Cloudflare is now in charge of all the DNS records instead of my domain hosting service `gen.xyz`.
 
+* The purpose of a nameserver like Cloudflare is to handle the Domain Name System (DNS) for your domain. 
 
+* By switching to Cloudflare's nameservers, all DNS settings are controlled through Cloudflare's interface instead of your domain registrar.
 
-
+![Cloudflare DNS Records](/cf-dns.png)
 
 
 ## Conclusion
