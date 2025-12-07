@@ -1,0 +1,109 @@
+baseURL = "https://lightbi-beta-demo.netlify.app/"
+languageCode = "en"
+title = "Tien's Blog"
+theme = "lightbi-hugo"
+summaryLength  = "30"
+metaDataFormat = "yaml"
+pygmentsStyle = "trac"
+pygmentsUseClasses = true
+pygmentsCodeFences = true
+pygmentsCodefencesGuessSyntax = true
+pygmentsUseClassic = true
+pygmentOptions = "linenos=inline"
+#googleAnalytics = "XXX"
+enableRobotsTXT = true
+enableGitInfo = false
+ignoreLogs = ['warning-goldmark-raw-html']
+
+
+[Params]
+selfHosted = true
+mainSections = ["posts"]
+dateFormat = "02 January 2006"
+comments = false
+readingTime = true
+wordCount = true
+hideAuthor = false
+useHLJS = true
+socialShare = true
+delayDisqus = true
+showRelatedPosts = true 
+gcse = false
+Lastmod = false
+rss = true 
+pagination = "10"
+description="Me@Space"
+lunrSearch = true
+previewCardImagePlacement = "bottom"
+hidePostImage = false
+tagSubtitle = "Here, you’ll discover the latest notes that explore new insights, and unique perspectives on the world."
+homepageLayout = "profile" #blog
+profileShortbio = "I’m passionate about technology in general, specifically electrical machines and computing system. Here, you'll find a mix of long essays, quick notes, and personal reflections on what I’ve learned throughout my journey."
+profilePhoto = "img/profile/home-profile-pic.jpg"
+
+[pagination]
+pagerSize = 9
+
+
+
+[Params.Author]
+  name = "Tien Nguyen"
+  website = "https://www.tienng.xyz/"
+  authorInfo = "<whatever it takes for your dreams>"
+  authorPostImage = "/img/author-post-img.jpg"
+  #facebook = "username"
+  #instagram = "username"
+  #youtube = "user/username" # or channel/channelname
+  #twitter = "username"
+  linkedin = "tienngg"
+  github = "tonyn678"
+  discord = "525637838083981333"
+  email = "tien@tienng.xyz"
+  #threads = "username"
+  #gitlab = "username"
+  #reddit = "username"
+  #stackoverflow = "users/XXXXXXX/username"
+  #snapchat = "username"
+  #spotify = "username"
+  #paypal = "username"
+  #telegram = "username"
+  #mastodon = "url"
+  #slack = "username"
+  #bandcamp = "username"
+  #itchio = "username"
+  #vk = "username"
+  #500px = "username"
+  #kaggle = "username"
+  #weibo = "username"
+  #xing = "username"
+  #bitbucket = "username"
+  #soundcloud = "username"
+  # codepen = "username"
+
+[sitemap]
+  changefreq = "monthly"
+  priority = 0.5
+  filename = "sitemap.xml"
+
+
+[[menu.main]]
+    name = "Home"
+    url = "/"
+    weight = 1
+
+[[menu.main]]
+    name = "Blog"
+    url = "/post/"
+    weight = 2
+
+[[menu.main]]
+    name = "Project"
+    url = "/project/"
+    weight = 3
+
+[[menu.main]]
+    name = "About"
+    url = "/about/"
+    weight = 4
+
+
